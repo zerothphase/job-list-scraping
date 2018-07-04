@@ -1,0 +1,186 @@
+// Google Analytics //
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-226014-4']);
+_gaq.push(['_setDomainName', '.jobstreet.com.sg']);
+_gaq.push(['_setAllowLinker', true]);
+_gaq.push(['_trackPageview', location.pathname + location.search + location.hash]);
+
+
+// Google Analytics to track Employers Tab event //
+var elEmployer = document.querySelectorAll('div.employers > a, div#employers > a');
+
+function triggerGAEmployer(){
+	_gaq.push(['_trackEvent', 'Top Navigation Tabs', 'Employers Form', document.location.href]);
+}
+
+for(var i=0; i < elEmployer.length; i++){
+	// To detect browser so able to set correct event binding
+	if (window.attachEvent)
+		elEmployer[i].attachEvent('onclick', triggerGAEmployer);
+	else
+		elEmployer[i].addEventListener('click', triggerGAEmployer, false);
+}
+
+
+(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+  
+
+//function to read cookies //
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+//function to read cookies //
+
+//function to create cookies //
+function setCookie(c_name,value,exdays)
+{
+	var exdate=new Date();
+	exdate.setDate(exdate.getDate() + exdays);
+	var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+	document.cookie=c_name + "=" + c_value + "; path=/";
+}
+//function to create cookies //
+
+// Google Remarketing Code //
+var rmccookie = 'gatcmr';
+var rmchtua = readCookie('HTUA');
+var rmctnetsisrep = readCookie('TNETSISREP');
+var rmctagged = readCookie(rmccookie);
+var rmcurl = window.location.href;
+
+var rmcn1 = rmcurl.indexOf("singapore/sales-marketing-jobs");
+var rmcn2 = rmcurl.indexOf("singapore/marketing-business-development-jobs");
+var rmcn3 = rmcurl.indexOf("singapore/corporate-wholesale-trading-sales-jobs");
+var rmcn4 = rmcurl.indexOf("singapore/retail-general-sales-jobs");
+var rmcn5 = rmcurl.indexOf("singapore/engineering-technical-it-sales-jobs");
+var rmcn6 = rmcurl.indexOf("singapore/telesales-telemarketing-sales-jobs");
+var rmcn7 = rmcurl.indexOf("singapore/insurance-sales-financial-services-jobs");
+var rmcn8 = rmcurl.indexOf("singapore/merchandising-sales-jobs");
+var rmcn9 = rmcurl.indexOf("employers");
+
+if ( rmcurl != null && rmctagged != "SGSPEZ" && ( rmcn1 != -1 || rmcn2 != -1  || rmcn3 != -1 || rmcn4 != -1 || rmcn5 != -1 || rmcn6 != -1 || rmcn7 != -1 || rmcn8 != -1 )  ) //SG IT visitors
+{
+	/* <![CDATA[ */
+	var google_conversion_id = 946352136;
+	var google_conversion_language = "en";
+	var google_conversion_format = "3";
+	var google_conversion_color = "ffffff";
+	var google_conversion_label = "JQFVCNv58QMQ5efsygM";
+	var google_conversion_value = 0;
+	/* ]]> */
+
+	document.write('<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>');
+	document.write('<noscript><div style="display:inline;"><img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/946352136/?label=JQFVCNv58QMQ5efsygM&amp;guid=ON&amp;script=0"/></div></noscript>');
+	setCookie(rmccookie, 'SGSPEZ', 30);
+}
+
+else if ( rmcurl != null && rmctagged != "SGEMP" && rmcn9 != -1  ) //SG EMPLOYERS visitors
+{
+	/* <![CDATA[ */
+	var google_conversion_id = 946352136;
+	var google_conversion_language = "en";
+	var google_conversion_format = "3";
+	var google_conversion_color = "ffffff";
+	var google_conversion_label = "PvJyCJvHiwQQ5efsygM";
+	var google_conversion_value = 0;
+	/* ]]> */
+
+	document.write('<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>');
+	document.write('<noscript><div style="display:inline;"><img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/946352136/?label=PvJyCJvHiwQQ5efsygM&amp;guid=ON&amp;script=0"/></div></noscript>');
+	setCookie(rmccookie, 'SGEMP', 30);
+}
+
+else if ( (rmchtua != null || rmctnetsisrep != null) && rmctagged != "SGSPEZ" && rmctagged != "SGLOGGED" && rmctagged != "SGEMP" ) // SG logged in users
+{
+	/* <![CDATA[ */
+	var google_conversion_id = 946352136;
+	var google_conversion_language = "en";
+	var google_conversion_format = "3";
+	var google_conversion_color = "ffffff";
+	var google_conversion_label = "cIWnCJva1gMQ5efsygM";
+	var google_conversion_value = 0;
+	/* ]]> */
+	
+	document.write('<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>');
+	document.write('<noscript><div style="display:inline;"><img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/946352136/?label=cIWnCJva1gMQ5efsygM&amp;guid=ON&amp;script=0"/></div></noscript>');
+	setCookie(rmccookie, 'SGLOGGED', 30);
+}
+else if ( rmctagged == null ) //SG visitors
+{
+	/* <![CDATA[ */
+	var google_conversion_id = 946352136;
+	var google_conversion_language = "en";
+	var google_conversion_format = "3";
+	var google_conversion_color = "ffffff";
+	var google_conversion_label = "6tJQCKPZ1gMQ5efsygM";
+	var google_conversion_value = 0;
+	/* ]]> */
+	
+	document.write('<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>');
+	document.write('<noscript><div style="display:inline;"><img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/946352136/?label=6tJQCKPZ1gMQ5efsygM&amp;guid=ON&amp;script=0"/></div></noscript>');
+	setCookie(rmccookie, 'SGVISITOR', 30);
+}
+// Google Remarketing Code //
+
+// New Google Code for Remarketing Tag 
+
+/* <![CDATA[ */
+var google_conversion_id = 946352136;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+
+document.write('<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>');
+document.write('<noscript><div style="display:inline;"><img height="1" width="1" style="border-style:none;" alt="" src="http://googleads.g.doubleclick.net/pagead/viewthroughconversion/946352136/?value=0&amp;guid=ON&amp;script=0"/></div></noscript>');
+	
+// New Google Code for Remarketing Tag 
+
+/* <![CDATA[ */
+var google_conversion_id = 946352136;		
+var google_custom_params = window.google_tag_params;		
+var google_remarketing_only = true;	
+/* ]]> */
+
+document.write('<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>');
+document.write('<noscript><div style="display:inline;"><img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/946352136/?value=0&amp;guid=ON&amp;script=0"/></div></noscript>');
+
+//Xaxis lightning bolt tracking code 
+var lbTrans = '[TRANSACTION ID]';
+var lbValue = '[TRANSACTION VALUE]';
+var lbData = '[Attribute/Value Pairs for Custom Data]';
+var lb_rn = new String(Math.random()); var lb_rns = lb_rn.substring(2, 12);
+var boltProtocol = ('https:' == document.location.protocol) ? 'https://' : 'http://';
+try
+{ var newScript = document.createElement('script'); var scriptElement = document.getElementsByTagName('script')[0]; newScript.type = 'text/javascript'; newScript.id = 'lightning_bolt_' + lb_rns; newScript.src = boltProtocol + 'cdn-akamai.mookie1.com/LB/LightningBolt.js'; scriptElement.parentNode.insertBefore(newScript, scriptElement); scriptElement = null; newScript = null; }
+catch (e) { }
+
+// Facebook Pixel Code
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?	
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window, document,'script','//connect.facebook.net/en_US/fbevents.js');
+
+fbq('init', '135988340126381');	
+fbq('track', "PageView");		
+
+document.write('<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=135988340126381&ev=PageView&noscript=1" /></noscript>');
+
+/* <![CDATA[ */
+var google_conversion_id = 945678328;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+
+document.write('<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js"></script>');
+document.write('<noscript><div style="display:inline;"><img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/945678328/?value=0&amp;guid=ON&amp;script=0"/></div></noscript>');
