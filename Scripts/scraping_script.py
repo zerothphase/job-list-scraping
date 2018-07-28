@@ -13,7 +13,7 @@ headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/5
 # 3 pages of results.
 urlHead = 'https://www.jobstreet.com.sg/en/job-search/job-vacancy.php?key=%22data+scientist%22&area=1&option=1&job-source=1%2C64&classified=1&job-posted=0&sort=2&order=0&pg='
 urlTail = '&src=16&srcr=16&ojs=10'
-urlPage = [1, 2, 3]
+urlPage = [1, 2, 3, 4]
 
 
 # Grabbing all the links of job listing found by the search.
@@ -67,20 +67,26 @@ for item in jobLink:
     job_soup = BeautifulSoup(jobPage.text, "html.parser")
     
     # Grab interesting informations
-    position_title = job_soup.find("h1", {"id":"position_title"}).text.strip()
-    company = job_soup.find("div", {"id":"company_name"}).text.replace('\n', '')
-    company_size = job_soup.find("p", {"id":"company_size"}).text
-    industry = job_soup.find("p", {"id":"company_industry"}).text
-    experience = job_soup.find("span", {"id":"years_of_experience"}).text.replace('\n', '').replace('\t', '')
-    posting_date = job_soup.find("p", {"id":"posting_date"}).text.replace('Advertised: ', '')
-    
-    # The closing_date has special case which requires extra cleaning. This special case occurs
-    # at the expiring listings.
-    closing_date = job_soup.find("p", {"id":"closing_date"}).text.strip().replace('Closing on ', '')
-    temp = re.search("Closing\D*\d{1}\D*(\d{2})",closing_date)
-    closing_date = closing_date.replace(temp[0],temp[1])
-    
-    job_des = job_soup.find("div", {"id":"job_description"}).get_text().replace('\n', '|').replace('\r', '|').replace(';', '|')
+    try:
+        position_title = job_soup.find("h1", {"id":"position_title"}).text.strip()
+        company = job_soup.find("div", {"id":"company_name"}).text.replace('\n', '')
+        company_size = job_soup.find("p", {"id":"company_size"}).text
+        industry = job_soup.find("p", {"id":"company_industry"}).text
+        experience = job_soup.find("span", {"id":"years_of_experience"}).text.replace('\n', '').replace('\t', '')
+        posting_date = job_soup.find("p", {"id":"posting_date"}).text.replace('Advertised: ', '')
+        
+        # The closing_date has special case which requires extra cleaning. This special case occurs
+        # at the expiring listings.
+        closing_date = job_soup.find("p", {"id":"closing_date"}).text.strip().replace('Closing on ', '')
+        temp = re.search("Closing\D*\d{1}\D*(\d{2})",closing_date)
+        if temp:
+            closing_date = closing_date.replace(temp[0],temp[1])
+        
+        job_des = job_soup.find("div", {"id":"job_description"}).get_text().replace('\n', '|').replace('\r', '|').replace(';', '|')
+        
+    except:
+        time.sleep(20)
+        continue
         
     # Append to the .csv file
     with open("job.csv", "a", encoding='utf-8') as file:
