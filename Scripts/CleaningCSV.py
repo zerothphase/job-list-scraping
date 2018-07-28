@@ -20,7 +20,7 @@ getText = re.findall("Closing\D*\d{1}\D*\d{1,2}",read)
 with open("job.csv",'r+', encoding='utf-8') as file:
     read = file.read()
     # Find all "Closing in 2 days |\n\t\t\t\t\t\t\t  \t\t\t\t\t\t\t  ##" and replace with ##
-    getText = re.findall("Closing\D*\d{1}\D*\d{1,2}",read)      
+    getText = re.findall("Closing\D*\d{1}\D*\d{2}",read)      
     newread = read
     for item in getText:
         editText = re.search("\d{2}$",item)

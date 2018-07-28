@@ -38,6 +38,9 @@ for i in urlPage:
     time.sleep(20)
     
 
+# For testing using a valid link
+# jobLink = ["https://www.jobstreet.com.sg/en/job/data-scientist-5-days-semiconductor-mfg-sso-430629-6584336?fr=21&src=16"]
+
 # Create a new .csv file to store the data.
 csv_headers = 'job_title; company; company_size; industry; required_experience; posting_date; closing_date; link; job_description\n'
 try:
@@ -50,6 +53,7 @@ except:
 # Scrape each of the job links
 for item in jobLink:
     print('Grabbing: {}'.format(item))
+    # Scrape and parse html
     try:
         t0 = time.time()
         jobPage = requests.get(item, timeout=10, headers=headers)
@@ -63,16 +67,23 @@ for item in jobLink:
     print('Parsing...')
     job_soup = BeautifulSoup(jobPage.text, "html.parser")
     
+    # Grab interesting informations
     position_title = job_soup.find("h1", {"id":"position_title"}).text.strip()
     company = job_soup.find("div", {"id":"company_name"}).text.replace('\n', '')
     company_size = job_soup.find("p", {"id":"company_size"}).text
     industry = job_soup.find("p", {"id":"company_industry"}).text
     experience = job_soup.find("span", {"id":"years_of_experience"}).text.replace('\n', '').replace('\t', '')
     posting_date = job_soup.find("p", {"id":"posting_date"}).text.replace('Advertised: ', '')
+    
+    # The closing_date has special case which requires extra cleaning. This special case occurs
+    # at the expiring listings.
     closing_date = job_soup.find("p", {"id":"closing_date"}).text.strip().replace('Closing on ', '')
+    temp = re.search("Closing\D*\d{1}\D*(\d{2})",closing_date)
+    closing_date = closing_date.replace(temp[0],temp[1])
+    
     job_des = job_soup.find("div", {"id":"job_description"}).get_text().replace('\n', '|').replace('\r', '|').replace(';', '|')
         
-    
+    # Append to the .csv file
     with open("job.csv", "a", encoding='utf-8') as file:
         file.write(position_title +';' + company +';' + company_size +';' + industry +';' + experience +';' + posting_date +';' + closing_date +';' + item +';' + job_des + '\n')
     print('Current iteration success')
