@@ -5,14 +5,18 @@ import time
 
 
 
-#url = ('https://www.jobstreet.com.sg/en/job-search/job-vacancy.php?ojs=10&key="data+scientist"')
+# Header for the request.get() to trick the website that I am accessing the website through a browser
 headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'}
 
 
+# This URL searches for the exact keyword "data scientist". Manual search on the website gives
+# 3 pages of results.
 urlHead = 'https://www.jobstreet.com.sg/en/job-search/job-vacancy.php?key=%22data+scientist%22&area=1&option=1&job-source=1%2C64&classified=1&job-posted=0&sort=2&order=0&pg='
 urlTail = '&src=16&srcr=16&ojs=10'
 urlPage = [1, 2, 3]
 
+
+# Grabbing all the links of job listing found by the search.
 jobLink = []
 
 for i in urlPage:
@@ -22,22 +26,19 @@ for i in urlPage:
     # Request and parse page
     page = requests.get(searchUrl, timeout=7, headers=headers)
     page_soup = BeautifulSoup(page.text, "html.parser")
-    #container = page_soup.find_all("div",{"class":"position-title header-text"})
-    
+
     # Find all listings
     position_list = page_soup.find_all("a", {"id":re.compile("^position_title_\d{1,2}$")})
-    #len(position_list)
-    
+ 
     # Extract job links
     for item in position_list:
     #    print(item["href"])
         jobLink.append(item["href"])
     
-    time.sleep(5)
+    time.sleep(20)
     
-#jobLink[0]
-#len(jobLink)
-#link = 'https://www.jobstreet.com.sg/en/job/vpavp-data-scientist-big-data-analytics-group-data-management-office-6595321?fr=21&src=16&srcr=16'
+
+# Create a new .csv file to store the data.
 csv_headers = 'job_title; company; company_size; industry; required_experience; posting_date; closing_date; link; job_description\n'
 try:
     with open("job.csv", "w", encoding='utf-8') as file:
@@ -46,12 +47,12 @@ except:
     print('error')
         
     
-
-for item in jobLink[12:]:
+# Scrape each of the job links
+for item in jobLink:
     print('Grabbing: {}'.format(item))
     try:
         t0 = time.time()
-        jobPage = requests.get(item, timeout=7, headers=headers)
+        jobPage = requests.get(item, timeout=10, headers=headers)
         response_delay = time.time() - t0
         
     except:
@@ -60,7 +61,7 @@ for item in jobLink[12:]:
         time.sleep(60)
         continue
     print('Parsing...')
-    job_soup = BeautifulSoup(jobPage.text, "html.parser") #exclude_encodings=["ISO-8859-7"]
+    job_soup = BeautifulSoup(jobPage.text, "html.parser")
     
     position_title = job_soup.find("h1", {"id":"position_title"}).text.strip()
     company = job_soup.find("div", {"id":"company_name"}).text.replace('\n', '')
@@ -75,21 +76,8 @@ for item in jobLink[12:]:
     with open("job.csv", "a", encoding='utf-8') as file:
         file.write(position_title +';' + company +';' + company_size +';' + industry +';' + experience +';' + posting_date +';' + closing_date +';' + item +';' + job_des + '\n')
     print('Current iteration success')
-    time.sleep(50*response_delay)
+    time.sleep(30*response_delay)
     
 
 print('Complete')
 
-# with open("job.csv", "a", encoding='utf-8') as file:
-# =============================================================================
-# with open('output1.html') as html_file:
-# 	soup = BeautifulSoup(html_file, 'html.parser')
-# 
-# with open('linklist.txt') as txt_file:
-# 	soup = txt_file.read()
-# =============================================================================
-
-
-#match = soup.find('div', {"class":"panel "})
-#linkList = soup.split("\n")
-#print(linkList)
