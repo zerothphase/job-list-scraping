@@ -57,7 +57,6 @@ for item in jobLink:
     try:
         t0 = time.time()
         jobPage = requests.get(item, timeout=10, headers=headers)
-        response_delay = time.time() - t0
         
     except:
         print('Error link: {}'.format(item))
@@ -87,7 +86,7 @@ for item in jobLink:
     with open("job.csv", "a", encoding='utf-8') as file:
         file.write(position_title +';' + company +';' + company_size +';' + industry +';' + experience +';' + posting_date +';' + closing_date +';' + item +';' + job_des + '\n')
     print('Current iteration success')
-    time.sleep(30*response_delay)
+    time.sleep(20)
     
 
 print('Complete')
