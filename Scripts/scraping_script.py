@@ -68,11 +68,11 @@ for item in jobLink:
     
     # Grab interesting informations
     try:
-        position_title = job_soup.find("h1", {"id":"position_title"}).text.strip()
-        company = job_soup.find("div", {"id":"company_name"}).text.replace('\n', '')
-        company_size = job_soup.find("p", {"id":"company_size"}).text
-        industry = job_soup.find("p", {"id":"company_industry"}).text
-        experience = job_soup.find("span", {"id":"years_of_experience"}).text.replace('\n', '').replace('\t', '')
+        position_title = job_soup.find("h1", {"id":"position_title"}).text.strip().replace(';', '|')
+        company = job_soup.find("div", {"id":"company_name"}).text.replace('\n', '').replace(';', '|')
+        company_size = job_soup.find("p", {"id":"company_size"}).text.replace(';', '|')
+        industry = job_soup.find("p", {"id":"company_industry"}).text.replace(';', '|')
+        experience = job_soup.find("span", {"id":"years_of_experience"}).text.replace('\n', '').replace('\t', '').replace(';', '|')
         posting_date = job_soup.find("p", {"id":"posting_date"}).text.replace('Advertised: ', '')
         
         # The closing_date has special case which requires extra cleaning. This special case occurs
